@@ -87,7 +87,7 @@
             ];
             nativeBuildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
-              wrapProgram $out/bin/fabric \
+              wrapProgram $out/bin/aio \
                 --prefix PATH : $out/bin
             '';
             meta = aioSlim.meta // {
@@ -97,7 +97,7 @@
           };
         in
         {
-          default = fabric;
+          default = aio;
           inherit aio;
           "aio-slim" = aioSlim;
           inherit (gomod2nix.legacyPackages.${system}) gomod2nix;
