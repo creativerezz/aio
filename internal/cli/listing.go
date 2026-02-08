@@ -1,0 +1,129 @@
+package cli
+
+import (
+	"fmt"
+	"os"
+	"strconv"
+
+	openai "github.com/openai/openai-go"
+
+	"github.com/creativerezz/aio/internal/core"
+	"github.com/creativerezz/aio/internal/i18n"
+	"github.com/creativerezz/aio/internal/plugins/ai"
+	"github.com/creativerezz/aio/internal/plugins/ai/gemini"
+	"github.com/creativerezz/aio/internal/plugins/db/fsdb"
+)
+
+// handleListingCommands handles listing-related commands
+// Returns (handled, error) where handled indicates if a command was processed and should exit
+func handleListingCommands(currentFlags *Flags, fabricDb *fsdb.Db, registry *core.PluginRegistry) (handled bool, err error) {
+	if currentFlags.LatestPatterns != "0" {
+		var parsedToInt int
+		if parsedToInt, err = strconv.Atoi(currentFlags.LatestPatterns); err != nil {
+			return true, err
+		}
+
+		if err = fabricDb.Patterns.PrintLatestPatterns(parsedToInt); err != nil {
+			return true, err
+		}
+		return true, nil
+	}
+
+	if currentFlags.ListPatterns {
+		// Check if patterns exist before listing
+		var names []string
+		if names, err = fabricDb.Patterns.GetNames(); err != nil {
+			return true, err
+		}
+
+		if len(names) == 0 && !currentFlags.ShellCompleteOutput {
+			// No patterns found - provide helpful guidance
+			fmt.Println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+			fmt.Println(i18n.T("patterns_not_found_header"))
+			fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+			fmt.Printf("\n%s\n", i18n.T("patterns_required_to_work"))
+			fmt.Println()
+			fmt.Println(i18n.T("patterns_option_run_setup"))
+			fmt.Printf("  %s\n", i18n.T("patterns_option_run_setup_command"))
+			fmt.Println()
+			fmt.Println(i18n.T("patterns_option_run_update"))
+			fmt.Printf("  %s\n", i18n.T("patterns_option_run_update_command"))
+			fmt.Println()
+			return true, nil
+		}
+
+		err = fabricDb.Patterns.ListNames(currentFlags.ShellCompleteOutput)
+		return true, err
+	}
+
+	if currentFlags.ListAllModels {
+		var models *ai.VendorsModels
+		if models, err = registry.VendorManager.GetModels(); err != nil {
+			return true, err
+		}
+
+		if currentFlags.Vendor != "" {
+			models = models.FilterByVendor(currentFlags.Vendor)
+		}
+
+		if currentFlags.ShellCompleteOutput {
+			models.Print(true)
+		} else {
+			models.PrintWithVendor(false, registry.Defaults.Vendor.Value, registry.Defaults.Model.Value)
+		}
+		return true, nil
+	}
+
+	if currentFlags.ListAllContexts {
+		err = fabricDb.Contexts.ListNames(currentFlags.ShellCompleteOutput)
+		return true, err
+	}
+
+	if currentFlags.ListAllSessions {
+		err = fabricDb.Sessions.ListNames(currentFlags.ShellCompleteOutput)
+		return true, err
+	}
+
+	if currentFlags.ListStrategies {
+		err = registry.Strategies.ListStrategies(currentFlags.ShellCompleteOutput)
+		return true, err
+	}
+
+	if currentFlags.ListVendors {
+		err = registry.ListVendors(os.Stdout)
+		return true, err
+	}
+
+	if currentFlags.ListGeminiVoices {
+		voicesList := gemini.ListGeminiVoices(currentFlags.ShellCompleteOutput)
+		fmt.Print(voicesList)
+		return true, nil
+	}
+
+	if currentFlags.ListTranscriptionModels {
+		listTranscriptionModels(currentFlags.ShellCompleteOutput)
+		return true, nil
+	}
+
+	return false, nil
+}
+
+// listTranscriptionModels lists all available transcription models
+func listTranscriptionModels(shellComplete bool) {
+	models := []string{
+		string(openai.AudioModelWhisper1),
+		string(openai.AudioModelGPT4oMiniTranscribe),
+		string(openai.AudioModelGPT4oTranscribe),
+	}
+
+	if shellComplete {
+		for _, model := range models {
+			fmt.Println(model)
+		}
+	} else {
+		fmt.Println(i18n.T("available_transcription_models"))
+		for _, model := range models {
+			fmt.Printf("  %s\n", model)
+		}
+	}
+}
