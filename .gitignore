@@ -1,3 +1,6 @@
+# Build binary
+/aio
+
 # Nix
 .direnv
 result
