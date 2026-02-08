@@ -67,12 +67,12 @@ func SummarizeVersionContent(content string) (string, error) {
 
 	output, err := cmd.Output()
 	if err != nil {
-		return "", fmt.Errorf("fabric command failed: %w", err)
+		return "", fmt.Errorf("aio command failed: %w", err)
 	}
 
 	summary := strings.TrimSpace(string(output))
 	if summary == "" {
-		return "", fmt.Errorf("fabric returned empty summary")
+		return "", fmt.Errorf("aio returned empty summary")
 	}
 
 	return summary, nil

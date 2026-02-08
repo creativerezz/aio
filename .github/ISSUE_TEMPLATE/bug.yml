@@ -46,8 +46,8 @@ body:
   - type: dropdown
     id: installation
     attributes:
-      label: How did you install Fabric?
-      description: "Please select the method you used to install Fabric. You can find this information in the [Installation section of the README](https://github.com/ksylvan/fabric/blob/main/README.md#installation)."
+      label: How did you install Aio?
+      description: "Please select the method you used to install Aio. You can find this information in the [Installation section of the README](https://github.com/creativerezz/aio/blob/main/README.md#installation)."
       options:
         - Release Binary - Windows
         - Release Binary - macOS (arm64)

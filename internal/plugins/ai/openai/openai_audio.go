@@ -144,7 +144,7 @@ func splitAudioFile(src, ext string, maxSize int64) (files []string, cleanup fun
 	}
 
 	var dir string
-	if dir, err = os.MkdirTemp("", "fabric-audio-*"); err != nil {
+	if dir, err = os.MkdirTemp("", "aio-audio-*"); err != nil {
 		return nil, nil, err
 	}
 	cleanup = func() { os.RemoveAll(dir) }

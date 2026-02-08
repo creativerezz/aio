@@ -31,7 +31,7 @@ type Flags struct {
 	Context                         string               `short:"C" long:"context" description:"Choose a context from the available contexts" default:""`
 	Session                         string               `long:"session" description:"Choose a session from the available sessions"`
 	Attachments                     []string             `short:"a" long:"attachment" description:"Attachment path or URL (e.g. for OpenAI image recognition messages)"`
-	Setup                           bool                 `short:"S" long:"setup" description:"Run setup for all reconfigurable parts of fabric"`
+	Setup                           bool                 `short:"S" long:"setup" description:"Run setup for all reconfigurable parts of aio"`
 	Temperature                     float64              `short:"t" long:"temperature" yaml:"temperature" description:"Set temperature" default:"0.7"`
 	TopP                            float64              `short:"T" long:"topp" yaml:"topp" description:"Set top P" default:"0.9"`
 	Stream                          bool                 `short:"s" long:"stream" yaml:"stream" description:"Stream"`
@@ -72,8 +72,8 @@ type Flags struct {
 	InputHasVars                    bool                 `long:"input-has-vars" description:"Apply variables to user input"`
 	NoVariableReplacement           bool                 `long:"no-variable-replacement" description:"Disable pattern variable replacement"`
 	DryRun                          bool                 `long:"dry-run" description:"Show what would be sent to the model without actually sending it"`
-	Serve                           bool                 `long:"serve" description:"Serve the Fabric Rest API"`
-	ServeOllama                     bool                 `long:"serveOllama" description:"Serve the Fabric Rest API with ollama endpoints"`
+	Serve                           bool                 `long:"serve" description:"Serve the Aio Rest API"`
+	ServeOllama                     bool                 `long:"serveOllama" description:"Serve the Aio Rest API with ollama endpoints"`
 	ServeAddress                    string               `long:"address" description:"The address to bind the REST API" default:":8080"`
 	ServeAPIKey                     string               `long:"api-key" description:"API key used to secure server routes" default:""`
 	Config                          string               `long:"config" description:"Path to YAML config file"`

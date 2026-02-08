@@ -13,7 +13,7 @@ func TestMultipleExtensionsWithInput(t *testing.T) {
 	variables := map[string]string{}
 
 	tmp := t.TempDir()
-	configDir := filepath.Join(tmp, ".config", "fabric")
+	configDir := filepath.Join(tmp, ".config", "aio")
 	extsDir := filepath.Join(configDir, "extensions")
 	binDir := filepath.Join(extsDir, "bin")
 	configsDir := filepath.Join(extsDir, "configs")

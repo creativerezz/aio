@@ -66,13 +66,13 @@ func Serve(registry *core.PluginRegistry, address string, apiKey string) (err er
 	})
 
 	// Register routes
-	fabricDb := registry.Db
-	NewPatternsHandler(r, fabricDb.Patterns)
-	NewContextsHandler(r, fabricDb.Contexts)
-	NewSessionsHandler(r, fabricDb.Sessions)
-	NewChatHandler(r, registry, fabricDb)
+	aioDb := registry.Db
+	NewPatternsHandler(r, aioDb.Patterns)
+	NewContextsHandler(r, aioDb.Contexts)
+	NewSessionsHandler(r, aioDb.Sessions)
+	NewChatHandler(r, registry, aioDb)
 	NewYouTubeHandler(r, registry)
-	NewConfigHandler(r, fabricDb)
+	NewConfigHandler(r, aioDb)
 	NewModelsHandler(r, registry.VendorManager)
 	NewStrategiesHandler(r)
 

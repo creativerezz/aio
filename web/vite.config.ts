@@ -2,8 +2,8 @@ import { purgeCss } from 'vite-plugin-tailwind-purgecss';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
-// Get the Fabric base URL from environment variable with fallback
-const FABRIC_BASE_URL = process.env.FABRIC_BASE_URL || 'http://localhost:8080';
+// Get the Aio base URL from environment variable with fallback
+const AIO_BASE_URL = process.env.AIO_BASE_URL || 'http://localhost:8080';
 
 export default defineConfig({
   plugins: [sveltekit(), purgeCss()],
@@ -26,9 +26,9 @@ export default defineConfig({
     'process': {
       cwd: () => ('/')
     },
-    // Inject Fabric configuration for client-side access
-    '__FABRIC_CONFIG__': {
-      FABRIC_BASE_URL: JSON.stringify(FABRIC_BASE_URL)
+    // Inject Aio configuration for client-side access
+    '__AIO_CONFIG__': {
+      AIO_BASE_URL: JSON.stringify(AIO_BASE_URL)
     }
   },
   resolve: {
@@ -42,7 +42,7 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: FABRIC_BASE_URL,
+        target: AIO_BASE_URL,
         changeOrigin: true,
         timeout: 900000,
         rewrite: (path) => path.replace(/^\/api/, ''),
@@ -57,7 +57,7 @@ export default defineConfig({
         }
       },
       '^/(patterns|models|sessions)/names': {
-        target: FABRIC_BASE_URL,
+        target: AIO_BASE_URL,
         changeOrigin: true,
         timeout: 900000,
         configure: (proxy, _options) => {

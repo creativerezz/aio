@@ -17,7 +17,7 @@ const (
 	CitationFormat    = "- [%s](%s)"
 )
 
-// ConvertMessages converts fabric chat messages to genai Content format.
+// ConvertMessages converts aio chat messages to genai Content format.
 // Gemini's API only accepts "user" and "model" roles, so other roles are mapped to "user".
 func ConvertMessages(msgs []*chat.ChatCompletionMessage) []*genai.Content {
 	var contents []*genai.Content

@@ -14,7 +14,7 @@ func withTestExtension(t *testing.T, name string, scriptContent string, testFunc
 
 	// Create a temporary directory for test extension
 	tmpDir := t.TempDir()
-	configDir := filepath.Join(tmpDir, ".config", "fabric")
+	configDir := filepath.Join(tmpDir, ".config", "aio")
 	extensionsDir := filepath.Join(configDir, "extensions")
 	binDir := filepath.Join(extensionsDir, "bin")
 	configsDir := filepath.Join(extensionsDir, "configs")

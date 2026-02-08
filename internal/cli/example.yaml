@@ -1,6 +1,6 @@
-#this is an example yaml config file for fabric
+#this is an example yaml config file for aio
 
-# use fabric pattern names
+# use aio pattern names
 pattern: ai
 
 # or use a filename

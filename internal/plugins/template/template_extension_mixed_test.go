@@ -16,7 +16,7 @@ func TestExtensionValueMixedInputAndVariable(t *testing.T) {
 
 	// Build temp extension environment
 	tmp := t.TempDir()
-	configDir := filepath.Join(tmp, ".config", "fabric")
+	configDir := filepath.Join(tmp, ".config", "aio")
 	extsDir := filepath.Join(configDir, "extensions")
 	binDir := filepath.Join(extsDir, "bin")
 	configsDir := filepath.Join(extsDir, "configs")

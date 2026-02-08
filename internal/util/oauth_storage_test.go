@@ -52,7 +52,7 @@ func TestOAuthToken_IsExpired(t *testing.T) {
 
 func TestOAuthStorage_SaveAndLoadToken(t *testing.T) {
 	// Create temporary directory for testing
-	tempDir, err := os.MkdirTemp("", "fabric_oauth_test")
+	tempDir, err := os.MkdirTemp("", "aio_oauth_test")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
@@ -109,7 +109,7 @@ func TestOAuthStorage_SaveAndLoadToken(t *testing.T) {
 
 func TestOAuthStorage_LoadNonExistentToken(t *testing.T) {
 	// Create temporary directory for testing
-	tempDir, err := os.MkdirTemp("", "fabric_oauth_test")
+	tempDir, err := os.MkdirTemp("", "aio_oauth_test")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
@@ -129,7 +129,7 @@ func TestOAuthStorage_LoadNonExistentToken(t *testing.T) {
 
 func TestOAuthStorage_DeleteToken(t *testing.T) {
 	// Create temporary directory for testing
-	tempDir, err := os.MkdirTemp("", "fabric_oauth_test")
+	tempDir, err := os.MkdirTemp("", "aio_oauth_test")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}
@@ -174,7 +174,7 @@ func TestOAuthStorage_DeleteToken(t *testing.T) {
 
 func TestOAuthStorage_HasValidToken(t *testing.T) {
 	// Create temporary directory for testing
-	tempDir, err := os.MkdirTemp("", "fabric_oauth_test")
+	tempDir, err := os.MkdirTemp("", "aio_oauth_test")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
 	}

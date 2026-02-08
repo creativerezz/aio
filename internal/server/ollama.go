@@ -50,7 +50,7 @@ type OllamaRequestBody struct {
 	Model     string            `json:"model"`
 	Options   map[string]any    `json:"options,omitempty"`
 	Stream    bool              `json:"stream"`
-	Variables map[string]string `json:"variables,omitempty"` // Fabric-specific: pattern variables (direct)
+	Variables map[string]string `json:"variables,omitempty"` // Aio-specific: pattern variables (direct)
 }
 
 type OllamaMessage struct {
@@ -75,7 +75,7 @@ type OllamaResponse struct {
 	EvalDuration       int64  `json:"eval_duration,omitempty"`
 }
 
-type FabricResponseFormat struct {
+type AioResponseFormat struct {
 	Type    string `json:"type"`
 	Format  string `json:"format"`
 	Content string `json:"content"`
@@ -194,12 +194,12 @@ func ServeOllama(registry *core.PluginRegistry, address string, version string) 
 	r.Use(gin.Recovery())
 
 	// Register routes
-	fabricDb := registry.Db
-	NewPatternsHandler(r, fabricDb.Patterns)
-	NewContextsHandler(r, fabricDb.Contexts)
-	NewSessionsHandler(r, fabricDb.Sessions)
-	NewChatHandler(r, registry, fabricDb)
-	NewConfigHandler(r, fabricDb)
+	aioDb := registry.Db
+	NewPatternsHandler(r, aioDb.Patterns)
+	NewContextsHandler(r, aioDb.Contexts)
+	NewSessionsHandler(r, aioDb.Sessions)
+	NewChatHandler(r, registry, aioDb)
+	NewConfigHandler(r, aioDb)
 	NewModelsHandler(r, registry.VendorManager)
 
 	typeConversion := APIConvert{
@@ -330,20 +330,20 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	// Set context length from parsed num_ctx
 	chat.ModelContextLength = numCtx
 
-	fabricChatReq, err := json.Marshal(chat)
+	aioChatReq, err := json.Marshal(chat)
 	if err != nil {
 		log.Printf("Error marshalling body: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	var req *http.Request
-	baseURL, err := buildFabricChatURL(*f.addr)
+	baseURL, err := buildAioChatURL(*f.addr)
 	if err != nil {
 		log.Printf("Error building /chat URL: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	req, err = http.NewRequest("POST", fmt.Sprintf("%s/chat", baseURL), bytes.NewBuffer(fabricChatReq))
+	req, err = http.NewRequest("POST", fmt.Sprintf("%s/chat", baseURL), bytes.NewBuffer(aioChatReq))
 	if err != nil {
 		log.Printf("Error creating /chat request: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create request"})
@@ -352,27 +352,27 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 
 	req = req.WithContext(c.Request.Context())
 
-	fabricRes, err := http.DefaultClient.Do(req)
+	aioRes, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Printf("Error getting /chat body: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	defer fabricRes.Body.Close()
+	defer aioRes.Body.Close()
 
-	if fabricRes.StatusCode < http.StatusOK || fabricRes.StatusCode >= http.StatusMultipleChoices {
-		bodyBytes, readErr := io.ReadAll(fabricRes.Body)
+	if aioRes.StatusCode < http.StatusOK || aioRes.StatusCode >= http.StatusMultipleChoices {
+		bodyBytes, readErr := io.ReadAll(aioRes.Body)
 		if readErr != nil {
-			log.Printf("Upstream Fabric server returned non-2xx status %d and body could not be read: %v", fabricRes.StatusCode, readErr)
+			log.Printf("Upstream Aio server returned non-2xx status %d and body could not be read: %v", aioRes.StatusCode, readErr)
 		} else {
-			log.Printf("Upstream Fabric server returned non-2xx status %d: %s", fabricRes.StatusCode, string(bodyBytes))
+			log.Printf("Upstream Aio server returned non-2xx status %d: %s", aioRes.StatusCode, string(bodyBytes))
 		}
 
-		errorMessage := fmt.Sprintf("upstream Fabric server returned status %d", fabricRes.StatusCode)
+		errorMessage := fmt.Sprintf("upstream Aio server returned status %d", aioRes.StatusCode)
 		if prompt.Stream {
 			_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", errorMessage), true)
 		} else {
-			c.JSON(fabricRes.StatusCode, gin.H{"error": errorMessage})
+			c.JSON(aioRes.StatusCode, gin.H{"error": errorMessage})
 		}
 		return
 	}
@@ -382,7 +382,7 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 	}
 
 	var contentBuilder strings.Builder
-	scanner := bufio.NewScanner(fabricRes.Body)
+	scanner := bufio.NewScanner(aioRes.Body)
 	scanner.Buffer(make([]byte, 0, 64*1024), 1024*1024)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -390,32 +390,32 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 			continue
 		}
 		payload := strings.TrimPrefix(line, "data: ")
-		var fabricResponse FabricResponseFormat
-		if err := json.Unmarshal([]byte(payload), &fabricResponse); err != nil {
+		var aioResponse AioResponseFormat
+		if err := json.Unmarshal([]byte(payload), &aioResponse); err != nil {
 			log.Printf("Error unmarshalling body: %v", err)
 			if prompt.Stream {
 				// In streaming mode, send the error in the same streaming format
 				_ = writeOllamaResponse(c, prompt.Model, "Error: failed to parse upstream response", true)
 			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to unmarshal Fabric response"})
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to unmarshal Aio response"})
 			}
 			return
 		}
-		if fabricResponse.Type == "error" {
+		if aioResponse.Type == "error" {
 			if prompt.Stream {
 				// In streaming mode, propagate the upstream error via a final streaming chunk
-				_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", fabricResponse.Content), true)
+				_ = writeOllamaResponse(c, prompt.Model, fmt.Sprintf("Error: %s", aioResponse.Content), true)
 			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": fabricResponse.Content})
+				c.JSON(http.StatusInternalServerError, gin.H{"error": aioResponse.Content})
 			}
 			return
 		}
-		if fabricResponse.Type != "content" {
+		if aioResponse.Type != "content" {
 			continue
 		}
-		contentBuilder.WriteString(fabricResponse.Content)
+		contentBuilder.WriteString(aioResponse.Content)
 		if prompt.Stream {
-			if err := writeOllamaResponse(c, prompt.Model, fabricResponse.Content, false); err != nil {
+			if err := writeOllamaResponse(c, prompt.Model, aioResponse.Content, false); err != nil {
 				log.Printf("Error writing response: %v", err)
 				return
 			}
@@ -442,10 +442,10 @@ func (f APIConvert) ollamaChat(c *gin.Context) {
 
 	// Check if we received any content from upstream
 	if contentBuilder.Len() == 0 {
-		log.Printf("Warning: no content received from upstream Fabric server")
+		log.Printf("Warning: no content received from upstream Aio server")
 		// In non-streaming mode, treat absence of content as an error
 		if !prompt.Stream {
-			c.JSON(http.StatusBadGateway, gin.H{"error": "no content received from upstream Fabric server"})
+			c.JSON(http.StatusBadGateway, gin.H{"error": "no content received from upstream Aio server"})
 			return
 		}
 	}
@@ -484,13 +484,13 @@ func buildFinalOllamaResponse(model string, content string, duration int64) Olla
 	}
 }
 
-// buildFabricChatURL constructs a valid HTTP/HTTPS base URL from various address
+// buildAioChatURL constructs a valid HTTP/HTTPS base URL from various address
 // formats. It accepts fully-qualified URLs (http:// or https://), :port shorthand
 // which is resolved to http://127.0.0.1:port, and bare host[:port] addresses. It
 // returns a normalized URL string without a trailing slash, or an error if the
 // address is empty, invalid, missing a host/hostname, or (for bare addresses)
 // contains a path component.
-func buildFabricChatURL(addr string) (string, error) {
+func buildAioChatURL(addr string) (string, error) {
 	if addr == "" {
 		return "", fmt.Errorf("empty address")
 	}

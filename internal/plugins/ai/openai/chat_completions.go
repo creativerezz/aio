@@ -112,7 +112,7 @@ func (o *Client) buildChatCompletionParams(
 	return
 }
 
-// convertChatMessage converts fabric chat message to OpenAI chat completion message
+// convertChatMessage converts aio chat message to OpenAI chat completion message
 func (o *Client) convertChatMessage(msg chat.ChatCompletionMessage) openai.ChatCompletionMessageParamUnion {
 	result := convertMessageCommon(msg)
 

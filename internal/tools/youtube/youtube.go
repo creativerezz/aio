@@ -223,7 +223,7 @@ func (o *YouTube) tryMethodYtDlpInternal(videoId string, language string, additi
 	}
 
 	// Create a temporary directory for yt-dlp output (cross-platform)
-	tempDir := filepath.Join(os.TempDir(), "fabric-youtube-"+videoId)
+	tempDir := filepath.Join(os.TempDir(), "aio-youtube-"+videoId)
 	if err = os.MkdirAll(tempDir, 0755); err != nil {
 		err = fmt.Errorf("%s", fmt.Sprintf(i18n.T("youtube_failed_create_temp_dir"), err))
 		return

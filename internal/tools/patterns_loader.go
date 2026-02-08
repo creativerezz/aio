@@ -254,7 +254,7 @@ func (o *PatternsLoader) tryPathMigration() (err error) {
 
 		// Try the new restructured path
 		newPath := "data/patterns"
-		testTempFolder := filepath.Join(os.TempDir(), "fabric-patterns-test")
+		testTempFolder := filepath.Join(os.TempDir(), "aio-patterns-test")
 
 		// Clean up any existing test temp folder
 		if err := os.RemoveAll(testTempFolder); err != nil {

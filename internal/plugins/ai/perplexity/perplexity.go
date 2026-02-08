@@ -46,7 +46,7 @@ func (c *Client) Configure() error {
 		if apiKeyFromEnv != "" {
 			c.APIKey.Value = apiKeyFromEnv
 		} else {
-			return fmt.Errorf("%s API key not configured. Please set the %s environment variable or run 'fabric --setup %s'", providerName, envKey, providerName)
+			return fmt.Errorf("%s API key not configured. Please set the %s environment variable or run 'aio --setup %s'", providerName, envKey, providerName)
 		}
 	}
 	c.client = perplexity.NewClient(c.APIKey.Value)
@@ -235,7 +235,7 @@ func (c *Client) NeedsRawMode(modelName string) bool {
 	return true
 }
 
-// Setup is called by the fabric CLI framework to guide the user through configuration.
+// Setup is called by the aio CLI framework to guide the user through configuration.
 func (c *Client) Setup() error {
 	return c.PluginBase.Setup()
 }

@@ -16,14 +16,14 @@ import (
 
 // handleListingCommands handles listing-related commands
 // Returns (handled, error) where handled indicates if a command was processed and should exit
-func handleListingCommands(currentFlags *Flags, fabricDb *fsdb.Db, registry *core.PluginRegistry) (handled bool, err error) {
+func handleListingCommands(currentFlags *Flags, aioDb *fsdb.Db, registry *core.PluginRegistry) (handled bool, err error) {
 	if currentFlags.LatestPatterns != "0" {
 		var parsedToInt int
 		if parsedToInt, err = strconv.Atoi(currentFlags.LatestPatterns); err != nil {
 			return true, err
 		}
 
-		if err = fabricDb.Patterns.PrintLatestPatterns(parsedToInt); err != nil {
+		if err = aioDb.Patterns.PrintLatestPatterns(parsedToInt); err != nil {
 			return true, err
 		}
 		return true, nil
@@ -32,7 +32,7 @@ func handleListingCommands(currentFlags *Flags, fabricDb *fsdb.Db, registry *cor
 	if currentFlags.ListPatterns {
 		// Check if patterns exist before listing
 		var names []string
-		if names, err = fabricDb.Patterns.GetNames(); err != nil {
+		if names, err = aioDb.Patterns.GetNames(); err != nil {
 			return true, err
 		}
 
@@ -52,7 +52,7 @@ func handleListingCommands(currentFlags *Flags, fabricDb *fsdb.Db, registry *cor
 			return true, nil
 		}
 
-		err = fabricDb.Patterns.ListNames(currentFlags.ShellCompleteOutput)
+		err = aioDb.Patterns.ListNames(currentFlags.ShellCompleteOutput)
 		return true, err
 	}
 
@@ -75,12 +75,12 @@ func handleListingCommands(currentFlags *Flags, fabricDb *fsdb.Db, registry *cor
 	}
 
 	if currentFlags.ListAllContexts {
-		err = fabricDb.Contexts.ListNames(currentFlags.ShellCompleteOutput)
+		err = aioDb.Contexts.ListNames(currentFlags.ShellCompleteOutput)
 		return true, err
 	}
 
 	if currentFlags.ListAllSessions {
-		err = fabricDb.Sessions.ListNames(currentFlags.ShellCompleteOutput)
+		err = aioDb.Sessions.ListNames(currentFlags.ShellCompleteOutput)
 		return true, err
 	}
 

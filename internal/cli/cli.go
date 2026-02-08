@@ -37,7 +37,7 @@ func Cli(version string) (err error) {
 	}
 
 	// Initialize database and registry
-	var registry, err2 = initializeFabric()
+	var registry, err2 = initializeAio()
 	if err2 != nil {
 		if !currentFlags.Setup {
 			debuglog.Log("%s\n", err2.Error())

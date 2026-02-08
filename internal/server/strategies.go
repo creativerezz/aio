@@ -20,7 +20,7 @@ type StrategyMeta struct {
 // NewStrategiesHandler registers the /strategies GET endpoint
 func NewStrategiesHandler(r *gin.Engine) {
 	r.GET("/strategies", func(c *gin.Context) {
-		strategiesDir := filepath.Join(os.Getenv("HOME"), ".config", "fabric", "strategies")
+		strategiesDir := filepath.Join(os.Getenv("HOME"), ".config", "aio", "strategies")
 
 		files, err := os.ReadDir(strategiesDir)
 		if err != nil {

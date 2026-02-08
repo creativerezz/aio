@@ -8,7 +8,7 @@ import (
 )
 
 func TestExtensionExecutor(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "fabric-ext-executor-*")
+	tmpDir, err := os.MkdirTemp("", "aio-ext-executor-*")
 	if err != nil {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}
@@ -148,7 +148,7 @@ config:
 }
 
 func TestFixedFileExtensionExecutor(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "fabric-ext-executor-fixed-*")
+	tmpDir, err := os.MkdirTemp("", "aio-ext-executor-fixed-*")
 	if err != nil {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}

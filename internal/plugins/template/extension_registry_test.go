@@ -7,7 +7,7 @@ import (
 )
 
 func TestRegistryPersistence(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "fabric-ext-registry-persist-*")
+	tmpDir, err := os.MkdirTemp("", "aio-ext-registry-persist-*")
 	if err != nil {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}

@@ -128,7 +128,7 @@ func (sm *StrategiesManager) gitCloneAndCopy() (err error) {
 		err = fmt.Errorf(i18n.T("strategies_home_dir_error"), err)
 		return
 	}
-	strategyDir := filepath.Join(homeDir, ".config", "fabric", "strategies")
+	strategyDir := filepath.Join(homeDir, ".config", "aio", "strategies")
 
 	// Create the directory if it doesn't exist
 	if err = os.MkdirAll(strategyDir, os.ModePerm); err != nil {
@@ -176,7 +176,7 @@ func getStrategyDir() (ret string, err error) {
 		ret = filepath.Join(".", "data/strategies")
 		return
 	}
-	return filepath.Join(homeDir, ".config", "fabric", "strategies"), nil
+	return filepath.Join(homeDir, ".config", "aio", "strategies"), nil
 }
 
 // LoadStrategy loads a strategy from the given name

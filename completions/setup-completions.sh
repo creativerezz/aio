@@ -208,11 +208,9 @@ install_file() {
     return 1
 }
 
-# Function to detect fabric command name
-detect/_aio_command() {
+# Function to detect aio command name
+detect_aio_command() {
     if command -v aio >/dev/null 2>&1; then
-        echo "aio"
-    elif command -v aio >/dev/null 2>&1; then
         echo "aio"
     else
         print_error "Command 'aio' not found in PATH"
@@ -466,8 +464,8 @@ main() {
         trap 'if [ -n "$TEMP_DIR" ] && [ -d "$TEMP_DIR" ]; then rm -rf "$TEMP_DIR"; fi' EXIT INT TERM
     fi
 
-    # Detect fabric command
-    aio_cmd="$(detect/_aio_command)"
+    # Detect aio command
+    aio_cmd="$(detect_aio_command)"
     print_info "Detected aio command: $aio_cmd"
 
     # Detect shell

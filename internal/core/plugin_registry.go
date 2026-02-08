@@ -574,7 +574,7 @@ func (o *PluginRegistry) GetChatter(model string, modelContextLength int, vendor
 	if ret.vendor == nil {
 		var errMsg string
 		if defaultModel == "" || defaultVendor == "" {
-			errMsg = "Please run, fabric --setup, and select default model and vendor."
+			errMsg = "Please run, aio --setup, and select default model and vendor."
 		} else {
 			errMsg = "could not find vendor."
 		}

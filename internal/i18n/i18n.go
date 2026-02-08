@@ -116,7 +116,7 @@ func userLocaleDir() string {
 	if err != nil {
 		dir = "."
 	}
-	path := filepath.Join(dir, "fabric", "locales")
+	path := filepath.Join(dir, "aio", "locales")
 	os.MkdirAll(path, 0o755)
 	return path
 }

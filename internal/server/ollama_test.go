@@ -90,13 +90,13 @@ func TestBuildFabricChatURL(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := buildFabricChatURL(tt.addr)
+			got, err := buildAioChatURL(tt.addr)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("buildFabricChatURL() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("buildAioChatURL() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if got != tt.want {
-				t.Errorf("buildFabricChatURL() = %v, want %v", got, tt.want)
+				t.Errorf("buildAioChatURL() = %v, want %v", got, tt.want)
 			}
 		})
 	}

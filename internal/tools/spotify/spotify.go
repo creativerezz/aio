@@ -2,11 +2,11 @@
 //
 // Requirements:
 // - Spotify Developer Account: Required to obtain Client ID and Client Secret
-// - Client Credentials: Stored in .env file via fabric --setup
+// - Client Credentials: Stored in .env file via aio --setup
 //
 // The implementation uses OAuth2 Client Credentials flow for authentication.
 // Note: The Spotify Web API does NOT provide access to podcast transcripts.
-// For transcript functionality, users should use fabric's --transcribe-file feature
+// For transcript functionality, users should use aio's --transcribe-file feature
 // with audio obtained from other sources.
 package spotify
 

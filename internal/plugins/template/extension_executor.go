@@ -66,7 +66,7 @@ func (e *ExtensionExecutor) Execute(name, operation, value string) (string, erro
 	return e.executeStdout(cmd, ext)
 }
 
-// formatCommand uses fabric's template system to format the command
+// formatCommand uses aio's template system to format the command
 // It creates a variables map for the template system using the input values
 func (e *ExtensionExecutor) formatCommand(ext *ExtensionDefinition, operation string, value string) (string, error) {
 	// Get operation config

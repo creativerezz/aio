@@ -141,5 +141,4 @@ function __aio_register_completions
         complete -c $cmd -l spotify -d 'Spotify podcast or episode URL to grab metadata'
 end
 
-__aio_register_completions fabric
-__aio_register_completions fabric-ai
+__aio_register_completions aio

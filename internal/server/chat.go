@@ -107,7 +107,7 @@ func (h *ChatHandler) HandleChat(c *gin.Context) {
 
 				// Load and prepend strategy prompt if strategyName is set
 				if p.StrategyName != "" {
-					strategyFile := filepath.Join(os.Getenv("HOME"), ".config", "fabric", "strategies", p.StrategyName+".json")
+					strategyFile := filepath.Join(os.Getenv("HOME"), ".config", "aio", "strategies", p.StrategyName+".json")
 					data, err := os.ReadFile(strategyFile)
 					if err == nil {
 						var s struct {

@@ -9,7 +9,7 @@ import (
 // TestExtensionManager is the main test suite for ExtensionManager
 func TestExtensionManager(t *testing.T) {
 	// Create temporary directory for tests
-	tmpDir, err := os.MkdirTemp("", "fabric-ext-test-*")
+	tmpDir, err := os.MkdirTemp("", "aio-ext-test-*")
 	if err != nil {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}
@@ -93,7 +93,7 @@ operations:
 
 // TestExtensionManagerErrors tests error cases
 func TestExtensionManagerErrors(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "fabric-ext-test-errors-*")
+	tmpDir, err := os.MkdirTemp("", "aio-ext-test-errors-*")
 	if err != nil {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}
@@ -125,7 +125,7 @@ func TestExtensionManagerErrors(t *testing.T) {
 
 // TestExtensionManagerWithInvalidConfig tests handling of invalid configurations
 func TestExtensionManagerWithInvalidConfig(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "fabric-ext-test-invalid-*")
+	tmpDir, err := os.MkdirTemp("", "aio-ext-test-invalid-*")
 	if err != nil {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}
