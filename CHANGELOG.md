@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.0.3 (2026-02-08)
+
+### Direct commits
+
+- Feat: add Railway deployment configuration
+Bake patterns and strategies into Docker image, add railway.toml config,
+and add GitHub Actions workflow to auto-deploy on release.
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## v0.0.2 (2026-02-08)
 
 ### Direct commits
