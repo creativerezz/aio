@@ -1,0 +1,9 @@
+[build]
+dockerfilePath = "scripts/docker/Dockerfile"
+
+[deploy]
+startCommand = "aio --serve --address :$PORT"
+healthcheckPath = "/patterns"
+healthcheckTimeout = 5
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
