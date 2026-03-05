@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.0.4 (2026-03-05)
+
+### Direct commits
+
+- Fix: add Dockerfile and fix Railway deployment config
+
+- Add Dockerfile with multi-stage build (no CGO dependency)
+- Bake patterns and strategies into the image
+
+- Fix railway.toml to point to correct Dockerfile path
+- Fix healthcheck path to /patterns/names and increase timeout
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## v0.0.3 (2026-02-08)
 
 ### Direct commits
