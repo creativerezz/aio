@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.0.7 (2026-03-05)
+
+### Direct commits
+
+- Fix: use Dockerfile CMD with PORT env var for Railway
+Remove startCommand from railway.toml and let the Dockerfile
+handle PORT via shell expansion in CMD.
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## v0.0.6 (2026-03-05)
 
 ### Direct commits
