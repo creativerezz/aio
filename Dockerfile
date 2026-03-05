@@ -26,7 +26,8 @@ COPY data/patterns/ /root/.config/aio/patterns/
 COPY data/strategies/ /root/.config/aio/strategies/
 
 ENV AIO_CONFIG_DIR=/root/.config/aio
+ENV PORT=8080
 
 EXPOSE 8080
 
-CMD ["aio", "--serve", "--address", ":8080"]
+CMD sh -c "aio --serve --address :${PORT}"

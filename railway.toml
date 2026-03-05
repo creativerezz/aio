@@ -2,7 +2,6 @@
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "aio --serve --address :$PORT"
 healthcheckPath = "/patterns/names"
 healthcheckTimeout = 120
 restartPolicyType = "on_failure"
