@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.0.5 (2026-03-05)
+
+### Direct commits
+
+- Fix: create empty .env file in Docker image
+The app fails to start if ~/.config/aio/.env doesn't exist
+because godotenv.Load() returns an error for missing files.
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## v0.0.4 (2026-03-05)
 
 ### Direct commits
