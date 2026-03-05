@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.0.6 (2026-03-05)
+
+### Direct commits
+
+- Fix: increase Railway healthcheck timeout to 120s
+10s was too short for container cold starts on Railway.
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## v0.0.5 (2026-03-05)
 
 ### Direct commits
