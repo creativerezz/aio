@@ -16,7 +16,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /aio ./cmd/aio
 FROM alpine:3.21
 
 RUN apk add --no-cache ca-certificates curl yt-dlp && \
-    mkdir -p /root/.config/aio
+    mkdir -p /root/.config/aio && \
+    touch /root/.config/aio/.env
 
 COPY --from=builder /aio /usr/local/bin/aio
 
